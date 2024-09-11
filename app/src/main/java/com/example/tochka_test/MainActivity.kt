@@ -1,7 +1,10 @@
 package com.example.tochka_test
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -34,11 +37,16 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
 
     private lateinit var gestureDetector: GestureDetectorCompat
 
-    @SuppressLint("ClickableViewAccessibility")
+    private lateinit var audioManager: AudioManager
+
+    @SuppressLint("ClickableViewAccessibility", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mediaPlayer?.release()
         playSound(R.raw.welcome_raw)
@@ -91,6 +99,15 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
         intent.getIntExtra("soundResId", 0).takeIf { it != 0 }?.let { soundResId ->
             playSound(soundResId)
         }
+
+        // Инициализируем AudioManager
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Устанавливаем звуковой режим в тихий
+        mediaPlayer?.release()
     }
 
     private fun onSingleClick() {

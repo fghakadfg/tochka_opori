@@ -1,13 +1,17 @@
 package com.example.tochka_test
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
-
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
+import android.Manifest
+import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.GestureDetector
@@ -18,6 +22,8 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -31,8 +37,9 @@ import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.util.Locale
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 import kotlin.math.abs
-
 
 class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener, TextToSpeech.OnInitListener {
     private lateinit var function: Button
@@ -42,14 +49,115 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
     private lateinit var tts: TextToSpeech
     private var isSwipe = false
 
-    private lateinit var gestureDetector: GestureDetectorCompat
+    val client = OkHttpClient.Builder()
+        .connectTimeout(30, TimeUnit.SECONDS)  // Время ожидания соединения
+        .readTimeout(30, TimeUnit.SECONDS)     // Время ожидания ответа
+        .writeTimeout(30, TimeUnit.SECONDS)    // Время ожидания записи
+        .build()
 
-    @SuppressLint("ClickableViewAccessibility")
+    companion object {
+        private const val REQUEST_CODE_ALL_PERMISSIONS = 100
+    }
+
+    private lateinit var gestureDetector: GestureDetectorCompat
+    // Вызов камеры для захвата изображения
+    private fun takePictureForText() {
+        Log.d("FunctionActivity", "takePicture called")
+        val values = ContentValues().apply {
+            put(MediaStore.Images.Media.TITLE, "New Picture")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        }
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+        imageUri?.let {
+            Log.d("FunctionActivity", "Launching camera with uri: $it")
+            requestImageCaptureText.launch(it)
+        } ?: run {
+            Toast.makeText(this, "Не удалось создать URI для изображения", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun takePictureForObject() {
+        Log.d("FunctionActivity", "takePicture called")
+        val values = ContentValues().apply {
+            put(MediaStore.Images.Media.TITLE, "New Picture")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        }
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+        imageUri?.let {
+            Log.d("FunctionActivity", "Launching camera with uri: $it")
+            requestImageCaptureObject.launch(it)
+        } ?: run {
+            Toast.makeText(this, "Не удалось создать URI для изображения", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    // Обработчик результата захвата изображения
+    private val requestImageCaptureText = registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
+        if (success) {
+            // Получение Bitmap и отправка его на сервер
+            imageUri?.let { uri ->
+                try {
+                    val inputStream = contentResolver.openInputStream(uri)
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    inputStream?.close()
+
+                    if (bitmap != null) {
+                        // Пример вызова функций с полученным Bitmap
+                        // Вызов textServerSend
+                        textServerSend(bitmap) // или objectDetectionServerSend(bitmap)
+                    } else {
+                        Toast.makeText(this, "Не удалось получить изображение", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: IOException) {
+                    Log.e("FunctionActivity", "Error while opening input stream", e)
+                    Toast.makeText(this, "Ошибка при открытии потока ввода", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(this, "Не удалось сделать фото", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private val requestImageCaptureObject = registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
+        if (success) {
+            // Получение Bitmap и отправка его на сервер
+            imageUri?.let { uri ->
+                try {
+                    val inputStream = contentResolver.openInputStream(uri)
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    inputStream?.close()
+
+                    if (bitmap != null) {
+                        // Пример вызова функций с полученным Bitmap
+                        // Вызов textServerSend
+                        objectDetectionServerSend(bitmap) // или objectDetectionServerSend(bitmap)
+                    } else {
+                        Toast.makeText(this, "Не удалось получить изображение", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: IOException) {
+                    Log.e("FunctionActivity", "Error while opening input stream", e)
+                    Toast.makeText(this, "Ошибка при открытии потока ввода", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(this, "Не удалось сделать фото", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private var imageUri: Uri? = null
+
+
+    @SuppressLint("ClickableViewAccessibility", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         tts = TextToSpeech(this, this)
         enableEdgeToEdge()
         setContentView(R.layout.activity_function)
+
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mediaPlayer?.release()
 
@@ -72,6 +180,9 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
             playSound(R.raw.stay_function_raw)
         }
 
+        // Проверка и запрос всех необходимых разрешений
+        checkAndRequestPermissions()
+
         gestureDetector = GestureDetectorCompat(this, this)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.function)) { v, insets ->
@@ -86,6 +197,35 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         }
     }
 
+    // Функция для проверки и запроса разрешений
+    private fun checkAndRequestPermissions() {
+        val permissions = mutableListOf<String>()
+
+        // Проверка разрешения на использование камеры
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.CAMERA)
+        }
+
+        // Проверка разрешения на запись во внешнее хранилище
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        // Если какие-то разрешения ещё не предоставлены, запрашиваем их
+        if (permissions.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permissions.toTypedArray(), REQUEST_CODE_ALL_PERMISSIONS)
+        } else {
+            // Все разрешения уже есть, можно продолжать работу takePictureForObjectDetection()  // Логика работы с камерой или хранилищем
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Устанавливаем звуковой режим в тихий
+        mediaPlayer?.release()
+    }
+
+    // Обработка ответа на запрос разрешений
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             // Устанавливаем язык озвучки
@@ -112,23 +252,7 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         super.onDestroy()
     }
 
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let {
-            // Преобразование URI в Bitmap
-            val inputStream = contentResolver.openInputStream(uri)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            inputStream?.close()
 
-            // Вызов функции для распознавания текста
-            textServerSend(bitmap)
-        } ?: run {
-            Toast.makeText(this, "Не удалось выбрать изображение", Toast.LENGTH_SHORT).show()
-        }
-    }
-    private fun selectImage() {
-        // Открытие галереи для выбора изображения
-        pickImageLauncher.launch("image/*")
-    }
     private fun playSound(soundResId: Int) {
         mediaPlayer?.release()
         mediaPlayer = MediaPlayer.create(this, soundResId)
@@ -153,8 +277,12 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         startActivity(intent)
         overridePendingTransition(R.anim.swipe_in_right, R.anim.swipe_out_left)
     }
+
     public fun textRecog(view: View) {
-        selectImage()
+        mediaPlayer?.release()
+        playSound(R.raw.click_text)
+        Thread.sleep(2500);
+        takePictureForText() // Открывает камеру
     }
 
     public fun textServerSend(bitmap: Bitmap) {
@@ -168,7 +296,11 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         Log.d("textRecog", "Bitmap converted to byte array")
 
         // Создание OkHttp клиента
-        val client = OkHttpClient()
+        val client = OkHttpClient.Builder()
+            .connectTimeout(120, TimeUnit.SECONDS)  // Время ожидания подключения
+            .readTimeout(120, TimeUnit.SECONDS)     // Время ожидания ответа
+            .writeTimeout(120, TimeUnit.SECONDS)    // Время ожидания записи
+            .build()
 
         // Создание тела запроса
         val requestBody = MultipartBody.Builder()
@@ -199,7 +331,13 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
                             try {
                                 val jsonObject = JSONObject(responseText)
                                 val resultText = jsonObject.getString("result")
-                                speak(resultText)  // Передаем строку в функцию для озвучивания
+                                if(resultText == "")
+                                {
+                                    speak("Нам не удалось угадать")
+                                }
+                                else{
+                                    speak("Текст гласит $resultText")
+                                }// Передаем строку в функцию для озвучивания
                                 Log.d("textRecog", "Response result: $resultText")
                             } catch (e: JSONException) {
                                 Log.e("textRecog", "Failed to parse JSON", e)
@@ -215,30 +353,18 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         }.start()
     }
 
-    // Метод для выбора изображения
-    private val pickImageLauncherForObjectDetection = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let {
-            // Преобразование URI в Bitmap
-            val inputStream = contentResolver.openInputStream(uri)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            inputStream?.close()
-
-            // Вызов функции для распознавания объектов
-            objectDetectionServerSend(bitmap)
-        } ?: run {
-            Toast.makeText(this, "Не удалось выбрать изображение", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    // Функция для выбора изображения для распознавания объектов
-    private fun selectImageForObjectDetection() {
-        // Открытие галереи для выбора изображения
-        pickImageLauncherForObjectDetection.launch("image/*")
-    }
-
-    // Новый метод для распознавания объектов на сервере
     public fun objectDetection(view: View) {
-        selectImageForObjectDetection()
+        mediaPlayer?.release()
+        playSound(R.raw.click_object)
+        Thread.sleep(2500);
+        takePictureForObject() // Открывает камеру
+    }
+
+    public fun qrDetection(view: View) {
+        mediaPlayer?.release()
+        playSound(R.raw.click_qr)
+        Thread.sleep(2500);
+        takePictureForObject() // Открывает камеру
     }
 
     public fun objectDetectionServerSend(bitmap: Bitmap) {
@@ -290,12 +416,18 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
                                     val objectName = detectedObjects.getString(i) // Получаем строку напрямую
                                     objectsList.add(objectName) // Добавляем строку в список
                                 }
-                                val resultText = objectsList.joinToString(", ")
 
-                                // Озвучиваем результат
-                                speak(resultText)  // Передаем строку в функцию для озвучивания
+                                val resultText = objectsList.joinToString(", ")
+                                if(resultText == "")
+                                {
+                                    speak("Нам не удалось угадать")
+                                }
+                                else {
+                                    // Озвучиваем результат
+                                    speak("Перед вами $resultText")
+                                }// Передаем строку в функцию для озвучивания
                                 Log.d("objectDetection", "Detected objects: $objectsList")
-                                Toast.makeText(this@FunctionActivity, "Объекты: $objectsList", Toast.LENGTH_LONG).show()
+                               // Toast.makeText(this@FunctionActivity, "Объекты: $objectsList", Toast.LENGTH_LONG).show() ТУТ КОММИТ
                             } catch (e: JSONException) {
                                 Log.e("objectDetection", "Failed to parse JSON", e)
                             }
@@ -309,7 +441,6 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
             }
         }.start()
     }
-
 
     private fun goPlaceView() {
         mediaPlayer?.release()

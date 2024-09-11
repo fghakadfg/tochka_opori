@@ -5,6 +5,7 @@ import OnPlaceClickListener
 import PlaceAdapter
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -25,16 +26,21 @@ class PlaceActivity : AppCompatActivity(), GestureDetector.OnGestureListener, On
     private lateinit var function: Button
     private lateinit var main: Button
     private lateinit var place: Button
-    private var isSwipe = false
+
+    private lateinit var placeAdapter: PlaceAdapter // адаптер теперь поле класса
+
+    private var isSwipeOrClick = false
     private var mediaPlayer: MediaPlayer? = null
 
     private lateinit var gestureDetector: GestureDetectorCompat
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_place)
+
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mediaPlayer?.release()
 
@@ -55,6 +61,10 @@ class PlaceActivity : AppCompatActivity(), GestureDetector.OnGestureListener, On
         // Установка слушателя на кнопку stay_function_view
         place.setOnClickListener {
             playSound(R.raw.stay_place_raw)
+
+            isSwipeOrClick = true // Устанавливаем флаг
+
+            updateAdapterSwipeFlag()
         }
 
         val listView = findViewById<ListView>(R.id.placeListView)
@@ -149,8 +159,8 @@ class PlaceActivity : AppCompatActivity(), GestureDetector.OnGestureListener, On
             ),
         )
 
-        val adapter = PlaceAdapter(this, listItems, this)
-        listView.adapter = adapter
+        placeAdapter  = PlaceAdapter(this, listItems, this, isSwipeOrClick)
+        listView.adapter = placeAdapter
 
         gestureDetector = GestureDetectorCompat(this, this)
 
@@ -164,6 +174,12 @@ class PlaceActivity : AppCompatActivity(), GestureDetector.OnGestureListener, On
         intent.getIntExtra("soundResId", 0).takeIf { it != 0 }?.let { soundResId ->
             playSound(soundResId)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Устанавливаем звуковой режим в тихий
+        mediaPlayer?.release()
     }
 
     private fun playSound(soundResId: Int) {
@@ -180,10 +196,14 @@ class PlaceActivity : AppCompatActivity(), GestureDetector.OnGestureListener, On
             }
             start()
         }
-        if (isSwipe) mediaPlayer?.release()
+        if (isSwipeOrClick) mediaPlayer?.release()
     }
 
     private fun goFuncView() {
+        isSwipeOrClick = true // Устанавливаем флаг
+
+        updateAdapterSwipeFlag()
+
         mediaPlayer?.release()
         val intent = Intent(this@PlaceActivity, FunctionActivity::class.java)
         intent.putExtra("soundResId", R.raw.go_function_raw)
@@ -192,6 +212,10 @@ class PlaceActivity : AppCompatActivity(), GestureDetector.OnGestureListener, On
     }
 
     private fun goMainView() {
+        isSwipeOrClick = true // Устанавливаем флаг
+
+        updateAdapterSwipeFlag()
+
         mediaPlayer?.release()
         val intent = Intent(this@PlaceActivity, MainActivity::class.java)
         intent.putExtra("soundResId", R.raw.go_main_view)
@@ -227,22 +251,32 @@ class PlaceActivity : AppCompatActivity(), GestureDetector.OnGestureListener, On
         return false
     }
 
+    private fun updateAdapterSwipeFlag() {
+        placeAdapter.updateSwipeFlag(isSwipeOrClick)
+    }
+
     private fun onSwipeRight() { //в главное окно
+        isSwipeOrClick = true // Устанавливаем флаг
+
+        updateAdapterSwipeFlag()
+
         mediaPlayer?.release()
         val intent = Intent(this@PlaceActivity, MainActivity::class.java)
         intent.putExtra("soundResId", R.raw.go_main_view)
         startActivity(intent)
         overridePendingTransition(R.anim.swipe_in_left, R.anim.swipe_out_right)
-        isSwipe = true
     }
 
     private fun onSwipeLeft() { //в окно с функциями
+        isSwipeOrClick = true // Устанавливаем флаг
+
+        updateAdapterSwipeFlag()
+
         mediaPlayer?.release()
         val intent = Intent(this@PlaceActivity, FunctionActivity::class.java)
         intent.putExtra("soundResId", R.raw.go_function_raw)
         startActivity(intent)
         overridePendingTransition(R.anim.swipe_in_right, R.anim.swipe_out_left)
-        isSwipe = true
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {

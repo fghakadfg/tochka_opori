@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import android.widget.BaseAdapter
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.tochka_test.R
+import java.io.Console
 
 data class ListItem(
     val iconResId: Int,
@@ -26,7 +27,7 @@ interface OnPlaceClickListener {
     fun onPlaceClick()
 }
 
-class PlaceAdapter(private val context: Context, private val dataSource: List<ListItem>, private val placeClickListener: OnPlaceClickListener) : BaseAdapter() {
+class PlaceAdapter(private val context: Context, private val dataSource: List<ListItem>, private val placeClickListener: OnPlaceClickListener, private var isSwipeOrClick: Boolean) : BaseAdapter() {
     private var isSingleClick = false
     private val doubleClickInterval: Long = 300 // Интервал для двойного нажатия в миллисекундах
 
@@ -58,6 +59,14 @@ class PlaceAdapter(private val context: Context, private val dataSource: List<Li
         ContextCompat.startActivity(context, intent, null)
     }
 
+    fun updateSwipeFlag(isSwipeOrClick: Boolean) {
+        this.isSwipeOrClick = isSwipeOrClick
+        if (isSwipeOrClick) {
+            mediaPlayer?.release() // Останавливаем звук, если произошел свайп
+        }
+        this.isSwipeOrClick = false
+    }
+
     private fun playSound(soundResId: Int) {
         mediaPlayer?.release()
         mediaPlayer = MediaPlayer.create(context, soundResId)
@@ -86,6 +95,12 @@ class PlaceAdapter(private val context: Context, private val dataSource: List<Li
         iconImagePlace.setImageResource(listItem.iconResId)
         namePlace.text = listItem.name
         aboutPlace.text = listItem.about
+
+        // Проверяем флаг свайпа, если он установлен, то останавливаем звук
+        if (isSwipeOrClick) {
+            mediaPlayer?.release()
+            this.isSwipeOrClick = false
+        }
 
         rowView.setOnClickListener {
             if (isSingleClick) {
