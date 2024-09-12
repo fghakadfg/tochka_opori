@@ -45,19 +45,19 @@
 
         <Button
             android:id="@+id/buttonFunction3"
-            android:layout_width="0dp"
-            android:layout_height="146dp"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
             android:layout_weight="1"
             android:backgroundTint="#d9d9d9"
             android:textColor="#000000"
             android:text="Функции"
-            android:textSize="17sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/buttonMain3"
-            android:layout_width="0dp"
-            android:layout_height="146dp"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
             android:layout_weight="1"
             android:backgroundTint="#d9d9d9"
             android:textColor="#000000"
@@ -67,13 +67,13 @@
 
         <Button
             android:id="@+id/buttonPlace3"
-            android:layout_width="0dp"
-            android:layout_height="146dp"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
             android:layout_weight="1"
             android:backgroundTint="#000000"
             android:textColor="#FFFFFF"
             android:text="Место"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
 

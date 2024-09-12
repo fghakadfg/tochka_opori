@@ -39,6 +39,12 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
 
     private lateinit var audioManager: AudioManager
 
+    // Объявляем checkerFunc как статическую переменную в companion object
+    companion object {
+        var checkerFunc = true //для другого звук
+        var checkerPlace = true //для другого звук
+    }
+
     @SuppressLint("ClickableViewAccessibility", "SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,7 +164,15 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
     private fun goFuncView() {
         mediaPlayer?.release()
         val intent = Intent(this@MainActivity, FunctionActivity::class.java)
-        intent.putExtra("soundResId", R.raw.go_function_raw)
+
+        // Проверяем значение checkerFunc
+        if (checkerFunc) {
+            intent.putExtra("soundResId", R.raw.go_function_raw)
+            checkerFunc = false // Меняем на false
+        } else {
+            intent.putExtra("soundResId", R.raw.go_function_raw_2)
+        }
+
         startActivity(intent)
         overridePendingTransition(R.anim.swipe_in_left, R.anim.swipe_out_right)
     }
@@ -166,7 +180,14 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
     private fun goPlaceView() {
         mediaPlayer?.release()
         val intent = Intent(this@MainActivity, PlaceActivity::class.java)
-        intent.putExtra("soundResId", R.raw.go_place_raw)
+
+        if (checkerPlace) {
+            intent.putExtra("soundResId", R.raw.go_place_raw)
+            checkerPlace = false // Меняем на false
+        } else {
+            intent.putExtra("soundResId", R.raw.go_place_raw_2)
+        }
+
         startActivity(intent)
         overridePendingTransition(R.anim.swipe_in_right, R.anim.swipe_out_left)
     }
@@ -202,7 +223,15 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
     private fun onSwipeRight() { //в окно с функциями местами
         mediaPlayer?.release()
         val intent = Intent(this@MainActivity, FunctionActivity::class.java)
-        intent.putExtra("soundResId", R.raw.go_function_raw)
+
+        // Проверяем значение checkerFunc
+        if (checkerFunc) {
+            intent.putExtra("soundResId", R.raw.go_function_raw)
+            checkerFunc = false // Меняем на false
+        } else {
+            intent.putExtra("soundResId", R.raw.go_function_raw_2)
+        }
+
         startActivity(intent)
         overridePendingTransition(R.anim.swipe_in_left, R.anim.swipe_out_right)
         isSwipe = true
@@ -211,7 +240,14 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener {
     private fun onSwipeLeft() { //в окно с местами
         mediaPlayer?.release()
         val intent = Intent(this@MainActivity, PlaceActivity::class.java)
-        intent.putExtra("soundResId", R.raw.go_place_raw)
+
+        if (checkerPlace) {
+            intent.putExtra("soundResId", R.raw.go_place_raw)
+            checkerPlace = false // Меняем на false
+        } else {
+            intent.putExtra("soundResId", R.raw.go_place_raw_2)
+        }
+
         startActivity(intent)
         overridePendingTransition(R.anim.swipe_in_right, R.anim.swipe_out_left)
         isSwipe = true
