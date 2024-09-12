@@ -51,7 +51,7 @@
             android:backgroundTint="#d9d9d9"
             android:textColor="#000000"
             android:text="Функции"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <Button
@@ -62,7 +62,7 @@
             android:backgroundTint="#d9d9d9"
             android:textColor="#000000"
             android:text="Главное"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <Button
@@ -84,11 +84,13 @@
         android:layout_height="48dp"
         android:text="Инклюзивные места"
         android:textColor="#000000"
-        android:textSize="34sp"
+        android:textSize="30sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/placeContainer"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewMicro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.218"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.525" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
