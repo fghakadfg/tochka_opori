@@ -219,12 +219,6 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        // Устанавливаем звуковой режим в тихий
-        mediaPlayer?.release()
-    }
-
     // Обработка ответа на запрос разрешений
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
