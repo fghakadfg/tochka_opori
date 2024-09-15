@@ -45,52 +45,59 @@
 
         <Button
             android:id="@+id/buttonFunction3"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="128dp"
             android:layout_weight="1"
             android:backgroundTint="#d9d9d9"
             android:textColor="#000000"
             android:text="Функции"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
 
         <Button
             android:id="@+id/buttonMain3"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="128dp"
             android:layout_weight="1"
             android:backgroundTint="#d9d9d9"
             android:textColor="#000000"
             android:text="Главное"
             android:textSize="17sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
 
         <Button
             android:id="@+id/buttonPlace3"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="128dp"
             android:layout_weight="1"
             android:backgroundTint="#000000"
             android:textColor="#FFFFFF"
             android:text="Место"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textView2"
         style="@style/TextAppearance.AppCompat.Display4"
-        android:layout_width="328dp"
-        android:layout_height="48dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
         android:text="Инклюзивные места"
         android:textColor="#000000"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/placeContainer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.218"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.525" />
-
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintVertical_bias="0.692"
+        android:maxLines="1" />
 </androidx.constraintlayout.widget.ConstraintLayout>
