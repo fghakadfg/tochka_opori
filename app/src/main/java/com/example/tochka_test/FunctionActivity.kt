@@ -307,7 +307,7 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
 
         // Создание запроса
         val request = Request.Builder()
-            .url("http://192.168.1.69:5000/process-image") // Замените на реальный IP и порт
+            .url("http://193.227.240.231:5000/process_text") // Замените на реальный IP и порт
             .post(requestBody)
             .build()
 
@@ -324,14 +324,12 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
                             // Проверка на корректность JSON
                             try {
                                 val jsonObject = JSONObject(responseText)
-                                val resultText = jsonObject.getString("result")
-                                if(resultText == "")
-                                {
-                                    speak("Нам не удалось угадать")
-                                }
-                                else{
-                                    speak("Текст гласит $resultText")
-                                }// Передаем строку в функцию для озвучивания
+                                val resultText = jsonObject.getString("extracted_text")
+                                if (resultText.isEmpty()) {
+                                    speak("Нам не удалось распознать текст")
+                                } else {
+                                    speak("Распознанный текст: $resultText")
+                                } // Передаем строку в функцию для озвучивания
                                 Log.d("textRecog", "Response result: $resultText")
                             } catch (e: JSONException) {
                                 Log.e("textRecog", "Failed to parse JSON", e)
@@ -372,7 +370,11 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         Log.d("objectDetection", "Bitmap converted to byte array")
 
         // Создание OkHttp клиента
-        val client = OkHttpClient()
+        val client = OkHttpClient.Builder()
+            .connectTimeout(120, TimeUnit.SECONDS)  // Время ожидания подключения
+            .readTimeout(120, TimeUnit.SECONDS)     // Время ожидания ответа
+            .writeTimeout(120, TimeUnit.SECONDS)    // Время ожидания записи
+            .build()
 
         // Создание тела запроса
         val requestBody = MultipartBody.Builder()
@@ -383,9 +385,9 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
 
         Log.d("objectDetection", "Request body created")
 
-        // Создание запроса для распознавания объектов
+        // Создание запроса
         val request = Request.Builder()
-            .url("http://192.168.1.69:8000/process_result") // Замените на реальный endpoint для детекции объектов
+            .url("http://193.227.240.231:5000/process_image") // Замените на реальный endpoint
             .post(requestBody)
             .build()
 
@@ -402,26 +404,18 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
                             // Проверка на корректность JSON
                             try {
                                 val jsonObject = JSONObject(responseText)
-                                val detectedObjects = jsonObject.getJSONArray("objects")
+                                val detectedObjects = jsonObject.getJSONArray("detected_objects")
 
-                                // Пример обработки массива объектов
                                 val objectsList = mutableListOf<String>()
                                 for (i in 0 until detectedObjects.length()) {
-                                    val objectName = detectedObjects.getString(i) // Получаем строку напрямую
+                                    val obj = detectedObjects.getJSONObject(i)
+                                    val objectName = obj.getString("translated_label") // Получаем строку напрямую
                                     objectsList.add(objectName) // Добавляем строку в список
                                 }
 
                                 val resultText = objectsList.joinToString(", ")
-                                if(resultText == "")
-                                {
-                                    speak("Нам не удалось угадать")
-                                }
-                                else {
-                                    // Озвучиваем результат
-                                    speak("Перед вами $resultText")
-                                }// Передаем строку в функцию для озвучивания
+                                speak(if (resultText.isEmpty()) "Нам не удалось угадать" else "Перед вами $resultText")
                                 Log.d("objectDetection", "Detected objects: $objectsList")
-                               // Toast.makeText(this@FunctionActivity, "Объекты: $objectsList", Toast.LENGTH_LONG).show() ТУТ КОММИТ
                             } catch (e: JSONException) {
                                 Log.e("objectDetection", "Failed to parse JSON", e)
                             }
@@ -435,6 +429,7 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
             }
         }.start()
     }
+
 
     private fun goPlaceView() {
         mediaPlayer?.release()
