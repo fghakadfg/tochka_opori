@@ -1,4 +1,4 @@
-package com.example.tochka_test
+package com.tochka_opory.tochka_test
 
 import android.annotation.SuppressLint
 import android.content.Context
