@@ -43,20 +43,6 @@
             android:gravity="center" />
 
         <Button
-            android:id="@+id/buttonQR"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:backgroundTint="#7A0070"
-            android:text="Сканирование QR-кода"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:gravity="center" />
-
-        <Button
             android:id="@+id/buttonObject"
             android:layout_width="match_parent"
             android:layout_height="0dp"
