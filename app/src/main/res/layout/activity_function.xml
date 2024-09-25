@@ -50,7 +50,6 @@
             android:backgroundTint="#7A0070"
             android:text="Сканирование QR-кода"
             android:textColor="#FFFFFF"
-            android:onClick="qrDetection"
             android:textSize="30sp"
             android:textStyle="bold"
             android:ellipsize="end"

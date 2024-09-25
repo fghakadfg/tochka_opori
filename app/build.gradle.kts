@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tochka_test"
+    namespace = "com.tochka_opory.tochka_test"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.tochka_test"
+        applicationId = "com.tochka_opory.tochka_test"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

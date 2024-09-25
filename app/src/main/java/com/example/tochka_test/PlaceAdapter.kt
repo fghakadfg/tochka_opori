@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import android.widget.BaseAdapter
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.tochka_test.R
+import com.tochka_opory.tochka_test.R
 import java.io.Console
 
 data class ListItem(
