@@ -52,6 +52,8 @@ dependencies {
     // Добавьте зависимости для OkHttp
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation(libs.vision.common)
+    implementation(libs.play.services.mlkit.barcode.scanning)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

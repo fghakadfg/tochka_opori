@@ -27,6 +27,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.common.InputImage
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -271,6 +273,77 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         startActivity(intent)
         overridePendingTransition(R.anim.swipe_in_right, R.anim.swipe_out_left)
     }
+    // Функция для обработки QR-кода
+    public fun processQrCode(bitmap: Bitmap) {
+        val image = InputImage.fromBitmap(bitmap, 0)  // Преобразуем изображение в InputImage для ML Kit
+        val scanner = BarcodeScanning.getClient()  // Инициализация сканера штрих-кодов
+
+        // Запуск сканирования QR-кода
+        scanner.process(image)
+            .addOnSuccessListener { barcodes ->
+                // Если обнаружены коды
+                if (barcodes.isNotEmpty()) {
+                    val qrCode = barcodes[0]  // Берем первый распознанный код
+                    val rawValue = qrCode.rawValue ?: "Не удалось распознать QR-код"
+
+                    // Озвучиваем результат
+                    speak("Распознанный QR-код: $rawValue")
+                } else {
+                    speak("QR-код не найден")
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("QRDetection", "Ошибка при обработке QR-кода", e)
+                speak("Ошибка при обработке QR-кода")
+            }
+    }
+    public fun qrDetection(view: View) {
+        mediaPlayer?.release()
+        playSound(R.raw.click_qr)
+        Thread.sleep(2500)
+        takePictureForQr()  // Используем новый метод для запуска камеры
+    }
+
+    // Добавим метод для работы с камерой для QR-кодов
+    private fun takePictureForQr() {
+        Log.d("FunctionActivity", "takePicture called for QR")
+        val values = ContentValues().apply {
+            put(MediaStore.Images.Media.TITLE, "New Picture for QR")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        }
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+        imageUri?.let {
+            Log.d("FunctionActivity", "Launching camera with uri: $it")
+            requestImageCaptureQr.launch(it)
+        } ?: run {
+            Toast.makeText(this, "Не удалось создать URI для изображения", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Обработчик результата захвата изображения для QR
+    private val requestImageCaptureQr = registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
+        if (success) {
+            imageUri?.let { uri ->
+                try {
+                    val inputStream = contentResolver.openInputStream(uri)
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    inputStream?.close()
+
+                    if (bitmap != null) {
+                        processQrCode(bitmap)  // Запускаем процессинг QR-кода
+                    } else {
+                        Toast.makeText(this, "Не удалось получить изображение", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: IOException) {
+                    Log.e("FunctionActivity", "Error while opening input stream", e)
+                    Toast.makeText(this, "Ошибка при открытии потока ввода", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(this, "Не удалось сделать фото", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     public fun textRecog(view: View) {
         mediaPlayer?.release()
@@ -307,7 +380,7 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
 
         // Создание запроса
         val request = Request.Builder()
-            .url("http://193.227.240.231:5000/process_text") // Замените на реальный IP и порт
+            .url("http://95.163.230.199:5000/process_text") // Замените на реальный IP и порт
             .post(requestBody)
             .build()
 
@@ -352,12 +425,7 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         takePictureForObject() // Открывает камеру
     }
 
-    public fun qrDetection(view: View) {
-        mediaPlayer?.release()
-        playSound(R.raw.click_qr)
-        Thread.sleep(2500);
-        takePictureForObject() // Открывает камеру
-    }
+
 
     public fun objectDetectionServerSend(bitmap: Bitmap) {
         Log.d("objectDetection", "Function called")
@@ -387,7 +455,7 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
 
         // Создание запроса
         val request = Request.Builder()
-            .url("http://193.227.240.231:5000/process_image") // Замените на реальный endpoint
+            .url("http://95.163.230.199:5000/process_image") // Замените на реальный endpoint
             .post(requestBody)
             .build()
 
