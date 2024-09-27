@@ -52,9 +52,11 @@ dependencies {
     // Добавьте зависимости для OkHttp
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
-    implementation(libs.vision.common)
-    implementation(libs.play.services.mlkit.barcode.scanning)
 
+    // Используйте только одну библиотеку для сканирования штрихкодов
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.google.mlkit:barcode-scanning:17.0.3")
+    implementation("me.dm7.barcodescanner:zbar:1.8.4")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
