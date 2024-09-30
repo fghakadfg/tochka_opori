@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_text_size">15sp</dimen>
+    <dimen name="button_label_size">56sp</dimen>
+    <drawable name="eyes_night">app:srcCompat="@drawable/eyes"</drawable>
+</resources>

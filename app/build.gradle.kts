@@ -57,6 +57,9 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.google.mlkit:barcode-scanning:17.0.3")
     implementation("me.dm7.barcodescanner:zbar:1.8.4")
+
+    // Для внешки
+    implementation ("com.google.android.material:material:1.8.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
