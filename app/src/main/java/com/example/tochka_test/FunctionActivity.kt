@@ -288,9 +288,10 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
 
     public fun textRecog(view: View) {
         mediaPlayer?.release()
-        playSound(R.raw.click_text)
-        Thread.sleep(2500);
+        /*playSound(R.raw.click_text)
+        Thread.sleep(2500);*/
         takePictureForText() // Открывает камеру
+        playSound(R.raw.click_text)
     }
 
     public fun textServerSend(bitmap: Bitmap) {
@@ -361,9 +362,10 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
 
     public fun objectDetection(view: View) {
         mediaPlayer?.release()
-        playSound(R.raw.click_object)
-        Thread.sleep(2500);
+        /*playSound(R.raw.click_object)
+        Thread.sleep(2500);*/
         takePictureForObject() // Открывает камеру
+        playSound(R.raw.click_object)
     }
 
     public fun objectDetectionServerSend(bitmap: Bitmap) {
@@ -439,10 +441,11 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
 
     fun scannerFunc(view: View){
         mediaPlayer?.release()
-        playSound(R.raw.click_qr)
-        Thread.sleep(2500);
+        /*playSound(R.raw.click_qr)
+        Thread.sleep(2500);*/
         val intent: Intent = Intent(this, ScannerActivity::class.java)
         startActivity(intent)
+        playSound(R.raw.click_qr)
     }
 
     private fun goPlaceView() {
