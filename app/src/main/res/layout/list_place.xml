@@ -12,19 +12,21 @@
         android:layout_width="@dimen/icon_width"
         android:layout_height="135dp"
         android:layout_marginStart="6dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher_theatre_round" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/name_place"
+        style="@style/name_text_style"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginEnd="6dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="4dp"
         android:text="Экскурсии с незрячим гидом “Осязаемый Петербург”"
-        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
         android:textSize="@dimen/name_text_size"
         app:layout_constraintBottom_toTopOf="@+id/about_place"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,17 +46,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/place_icon" />
 
-    <Button
-        android:id="@+id/item_button"
-        android:layout_width="378dp"
-        android:layout_height="77dp"
-        android:layout_marginTop="4dp"
-        android:backgroundTint="#d9d9d9"
-        android:textColor="#000000"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="Записаться"
-        android:textSize="32sp"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/click_double_label"
+        style="@style/TextAppearance.Material3.LabelLarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="6dp"
+        android:text="Понравилось? Нажми дважды для записи!"
+        android:textSize="@dimen/name_text_size"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/about_place" />

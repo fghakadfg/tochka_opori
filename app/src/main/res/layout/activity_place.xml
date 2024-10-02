@@ -5,7 +5,7 @@
     android:id="@+id/place"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context="com.tochka_opory.tochka_test.PlaceActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageViewMicro"
@@ -102,16 +102,16 @@
         style="@style/MaterialAlertDialog.Material3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         android:layout_marginStart="4dp"
+        android:layout_marginBottom="12dp"
+        android:maxLines="1"
         android:text="Инклюзивные места"
         android:textSize="@dimen/title_size"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/placeContainer"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewMicro"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintVertical_bias="0.692"
-        android:maxLines="1" />
+        app:layout_constraintVertical_bias="0.692" />
 </androidx.constraintlayout.widget.ConstraintLayout>
