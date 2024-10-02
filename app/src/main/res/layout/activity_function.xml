@@ -153,7 +153,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textView2"
-        style="@style/MaterialAlertDialog.Material3"
+        style="@style/Widget.MaterialComponents.TextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -161,6 +161,7 @@
         android:maxLines="1"
         android:text="Функции с камерой"
         android:textSize="@dimen/title_size"
+        android:textColor="@color/black"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
         app:layout_constraintEnd_toStartOf="@+id/imageViewMicro"

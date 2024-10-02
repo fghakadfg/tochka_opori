@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/place_icon"
         android:layout_width="@dimen/icon_width"
-        android:layout_height="135dp"
+        android:layout_height="@dimen/icon_height"
         android:layout_marginStart="6dp"
         android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,15 +19,16 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/name_place"
-        style="@style/name_text_style"
+        style="@style/Widget.MaterialComponents.TextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="2dp"
         android:layout_marginTop="2dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="6dp"
         android:text="Экскурсии с незрячим гидом “Осязаемый Петербург”"
         android:textSize="@dimen/name_text_size"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/about_place"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/place_icon"
@@ -35,13 +36,15 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/about_place"
-        style="@style/MaterialAlertDialog.Material3"
+        style="@style/Widget.MaterialComponents.TextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginTop="4dp"
         android:text="Коллектив театра «Внутреннее зрение» был создан в 1967 году. Он создавался для инвалидов по зрению и средствами драматического искусства должен был помочь им в социальной реабилитации."
         android:textSize="@dimen/description_text_size"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/place_icon" />
@@ -53,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="30dp"
         android:text="Понравилось? Нажми дважды для записи!"
         android:textSize="@dimen/name_text_size"
         android:textStyle="bold"
