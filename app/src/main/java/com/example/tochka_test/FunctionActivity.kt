@@ -366,8 +366,6 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         takePictureForObject() // Открывает камеру
     }
 
-
-
     public fun objectDetectionServerSend(bitmap: Bitmap) {
         Log.d("objectDetection", "Function called")
 
@@ -439,10 +437,10 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         }.start()
     }
 
-
-
-
     fun scannerFunc(view: View){
+        mediaPlayer?.release()
+        playSound(R.raw.click_qr)
+        Thread.sleep(2500);
         val intent: Intent = Intent(this, ScannerActivity::class.java)
         startActivity(intent)
     }
@@ -505,8 +503,4 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
         gestureDetector.onTouchEvent(ev)
         return super.dispatchTouchEvent(ev)
     }
-
-
-
-
 }
