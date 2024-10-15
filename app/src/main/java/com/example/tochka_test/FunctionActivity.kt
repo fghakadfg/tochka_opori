@@ -319,7 +319,7 @@ class FunctionActivity : AppCompatActivity(), GestureDetector.OnGestureListener,
             .build()
 
         Log.d("textRecog", "Request body created")
-
+        val toPush: Int = 0;
         // Создание запроса
         val request = Request.Builder()
             .url("http://79.174.85.132:5000/process_text") // Замените на реальный IP и порт
