@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_text_size">11sp</dimen>
+    <dimen name="label_size">40sp</dimen>
+    <dimen name="title_size">20sp</dimen>
+    <dimen name="button_func_text_size">21sp</dimen>
+    <dimen name="name_text_size">18sp</dimen>
+    <dimen name="description_text_size">16sp</dimen>
+    <dimen name="linearlayout_button_height">92dp</dimen>
+    <dimen name="button_height">96dp</dimen>
+    <dimen name="mini_image_height">54dp</dimen>
+    <dimen name="icon_width">115dp</dimen>
+    <dimen name="icon_height">135dp</dimen>
+    <dimen name="main_image_width">340dp</dimen>
+</resources>

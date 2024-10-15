@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_place_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/place_icon"
+        android:layout_width="@dimen/icon_width"
+        android:layout_height="@dimen/icon_height"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher_theatre_round" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/name_place"
+        style="@style/Widget.MaterialComponents.TextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="6dp"
+        android:text="Экскурсии с незрячим гидом “Осязаемый Петербург”"
+        android:textSize="@dimen/name_text_size"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/about_place"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/place_icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/about_place"
+        style="@style/Widget.MaterialComponents.TextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Коллектив театра «Внутреннее зрение» был создан в 1967 году. Он создавался для инвалидов по зрению и средствами драматического искусства должен был помочь им в социальной реабилитации."
+        android:textSize="@dimen/description_text_size"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/place_icon" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/click_double_label"
+        style="@style/TextAppearance.Material3.LabelLarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="30dp"
+        android:text="Понравилось? Нажми дважды для записи!"
+        android:textSize="@dimen/name_text_size"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_place" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

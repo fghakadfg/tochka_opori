@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/place"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tochka_opory.tochka_test.PlaceActivity">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageViewMicro"
+        android:layout_width="53dp"
+        android:layout_height="@dimen/mini_image_height"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher_eyes_round" />
+
+    <LinearLayout
+        android:id="@+id/placeContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/imageViewMicro"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+
+        <ListView
+            android:id="@+id/placeListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/linearlayout_button_height"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/buttonFunction3"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="#d9d9d9"
+            android:textColor="#000000"
+            android:text="Функции"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:strokeWidth="4dp"
+            app:strokeColor="#000000"
+            app:cornerRadius="20dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/buttonMain3"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="#d9d9d9"
+            android:textColor="#000000"
+            android:text="Главное"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:strokeWidth="4dp"
+            app:strokeColor="#000000"
+            app:cornerRadius="20dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/buttonPlace3"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="#000000"
+            android:textColor="#FFFFFF"
+            android:text="Место"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:strokeWidth="2dp"
+            app:strokeColor="#d9d9d9"
+            app:cornerRadius="20dp"/>
+    </LinearLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView2"
+        style="@style/Widget.MaterialComponents.TextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="12dp"
+        android:maxLines="1"
+        android:text="Инклюзивные места"
+        android:textSize="@dimen/title_size"
+        android:textStyle="bold|italic"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/placeContainer"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewMicro"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.695" />
+</androidx.constraintlayout.widget.ConstraintLayout>

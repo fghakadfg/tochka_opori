@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/function"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.tochka_test.FunctionActivity">
+
+
+    <ImageView
+        android:id="@+id/imageViewMicro"
+        android:layout_width="53dp"
+        android:layout_height="@dimen/mini_image_height"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher_eyes_round" />
+
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/imageViewMicro"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonText"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:onClick="textRecog"
+            android:backgroundTint="#0022CC"
+            android:text="Распознавание текста"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/button_func_text_size"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:gravity="center"
+            app:cornerRadius="30dp"
+            app:strokeWidth="4dp"
+            app:strokeColor="#000000"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonQR"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:backgroundTint="#7A0070"
+            android:text="Сканирование QR-кода"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/button_func_text_size"
+            android:onClick="scannerFunc"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:gravity="center"
+            app:cornerRadius="30dp"
+            app:strokeWidth="4dp"
+            app:strokeColor="#000000"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonObject"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:backgroundTint="#8A0000"
+            android:onClick="objectDetection"
+            android:text="Распознавание предмета"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/button_func_text_size"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:gravity="center"
+            app:cornerRadius="30dp"
+            app:strokeWidth="4dp"
+            app:strokeColor="#000000"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/linearlayout_button_height"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/buttonFunction2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="#000000"
+            android:textColor="#FFFFFF"
+            android:text="Функции"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:strokeWidth="2dp"
+            app:strokeColor="#d9d9d9"
+            app:cornerRadius="20dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/buttonMain2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="#d9d9d9"
+            android:textColor="#000000"
+            android:text="Главное"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:strokeWidth="4dp"
+            app:strokeColor="#000000"
+            app:cornerRadius="20dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/buttonPlace2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="#d9d9d9"
+            android:textColor="#000000"
+            android:text="Место"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:strokeWidth="4dp"
+            app:strokeColor="#000000"
+            app:cornerRadius="20dp"/>
+    </LinearLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView2"
+        style="@style/Widget.MaterialComponents.TextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="12dp"
+        android:maxLines="1"
+        android:text="Функции с камерой"
+        android:textSize="@dimen/title_size"
+        android:textColor="@color/black"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewMicro"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.692" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

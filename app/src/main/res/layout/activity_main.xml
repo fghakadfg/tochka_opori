@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageViewEyes"
+        android:layout_width="@dimen/main_image_width"
+        android:layout_height="580dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="135dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/eyes" />
+
+    <Button
+        android:id="@+id/buttonInvisible"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="visible" />
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/MaterialAlertDialog.Material3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="Точка Опоры"
+        android:textSize="@dimen/label_size"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.169"/>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/linearlayout_button_height"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/buttonFunction1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="#d9d9d9"
+            android:text="Функции"
+            android:textColor="#000000"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:strokeWidth="4dp"
+            app:strokeColor="#000000"
+            app:cornerRadius="20dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/buttonMain1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="#000000"
+            android:textColor="#FFFFFF"
+            android:text="Главное"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:strokeWidth="2dp"
+            app:strokeColor="#d9d9d9"
+            app:cornerRadius="20dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/buttonPlace1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="#d9d9d9"
+            android:textColor="#000000"
+            android:text="Место"
+            android:textSize="@dimen/button_text_size"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:strokeWidth="4dp"
+            app:strokeColor="#000000"
+            app:cornerRadius="20dp"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
